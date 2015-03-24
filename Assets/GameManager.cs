@@ -108,10 +108,12 @@ public class GameManager : MonoBehaviour {
 
 	void cameraMoveByStatus()
 	{
+		Debug.Log("Move Camera by Temp method : 'cameraMoveByStatus'");
 		if (cameraStatus == 0)
 		{
 			MoveCamera(CameraPosition.Mid);
 			cameraStatus++;
+
 		}
 		else if (cameraStatus == 1)
 		{
