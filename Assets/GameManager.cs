@@ -57,8 +57,18 @@ public class GameManager : MonoBehaviour {
 	IEnumerator MoveAniOfCamera(Vector3 position, float size)
 	{
 			iTween.MoveTo (MainCamera, position, cameraMoveTime);
-			ChangeOrthographicSizeOfCamera(size);
+			Debug.Log("Zoom from "+MainCamera.camera.orthographicSize+" to "+size);
+			iTween.ValueTo(MainCamera.gameObject, iTween.Hash("from", MainCamera.camera.orthographicSize,
+																"to", size,
+															  "time", cameraMoveTime,
+													"onupdatetarget", this.gameObject, //??
+														  "onupdate", "updateOrthographicSizeOfCamera"));
 			yield return new WaitForSeconds(cameraMoveTime);
+	}
+
+	void updateOrthographicSizeOfCamera(float size)
+	{
+		MainCamera.camera.orthographicSize = size;
 	}
 
 	void MoveCamera (CameraPosition cameraPosition)
@@ -66,31 +76,14 @@ public class GameManager : MonoBehaviour {
 		if (cameraPosition == CameraPosition.Out)
 		{
 			StartCoroutine(MoveAniOfCamera(outPositionOfCamera, outOrthographicSizeOfCamera));
-//			iTween.MoveTo (MainCamera, outPositionOfCamera, cameraMoveTime);
-//			ChangeOrthographicSizeOfCamera(outOrthographicSizeOfCamera);
-			//iTween.ScaleTo (MainCamera, outScaleOfCamera, cameraMoveTime);
 		}
 		else if (cameraPosition == CameraPosition.Mid)
 		{
 			StartCoroutine(MoveAniOfCamera(midPositionOfCamera, midOrthographicSizeOfCamera));
-//			iTween.MoveTo (MainCamera, midPositionOfCamera, cameraMoveTime);
-
-//			ChangeOrthographicSizeOfCamera(midOrthographicSizeOfCamera);
-
-/*			iTween.ValueTo (MainCamera.gameObject, iTween.Hash("from", MainCamera.camera.orthographicSize,
-															     "to", midOrthographicSizeOfCamera,
-															   "time", cameraMoveTime,
-														   "onupdate", "ChangeOrthographicSizeOfCamera",
-													 "onupdatetarget", MainCamera.gameObject
-													 ));
-*/			//iTween.ScaleTo (MainCamera, midScaleOfCamera, cameraMoveTime);
 		}
 		else if (cameraPosition == CameraPosition.In)
 		{
 			StartCoroutine(MoveAniOfCamera(inPositionOfCamera, inOrthographicSizeOfCamera));
-			//iTween.MoveTo (MainCamera, inPositionOfCamera, cameraMoveTime);
-			//ChangeOrthographicSizeOfCamera(inOrthographicSizeOfCamera);
-			//iTween.ScaleTo (MainCamera, inScaleOfCamera, cameraMoveTime);
 		}
 		else
 		{
