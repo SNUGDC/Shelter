@@ -8,6 +8,7 @@ public class TitleManager : MonoBehaviour {
 	public GameObject prologue;
 	public GameObject newGameText;
 	public int activeTimeOfText = 3;
+	public int fadeoutTimeOfText = 2;
 
 	void Awake()
 	{
@@ -50,7 +51,8 @@ public class TitleManager : MonoBehaviour {
 	{
 		prologue.SetActive(true);
 		yield return new WaitForSeconds(activeTimeOfText);
+		iTween.FadeTo(prologue, 0, fadeoutTimeOfText);
+		yield return new WaitForSeconds(fadeoutTimeOfText);
 		prologue.SetActive(false);
-		//iTween.FadeFrom(prologue, 0, 1);
 	}
 }
