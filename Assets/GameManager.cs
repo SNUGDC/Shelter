@@ -7,8 +7,11 @@ public class GameManager : MonoBehaviour {
 	private static GameManager gameManagerInstance = null;
 
 	public GameObject MainCamera;
+	public GameObject UICamera;
+	public GameObject WhiteScreen;
 	public CameraPosition cameraPosition = CameraPosition.Default;
 	public const int cameraMoveTime = 2;
+	public const int fadeoutTime = 2;
 
 	Vector3 outPositionOfCamera = new Vector3 (0, 0, -10);
 	Vector3 midPositionOfCamera = new Vector3 (-2.25f, -0.9f, -10);
@@ -45,6 +48,7 @@ public class GameManager : MonoBehaviour {
 	void Start ()
 	{
 		InitializeCamera();
+		StartCoroutine("FadeoutWhiteScreen");
 	}
 
 	void InitializeCamera()
@@ -53,6 +57,17 @@ public class GameManager : MonoBehaviour {
 		MainCamera.transform.position = new Vector3 (0, 0, -10);
 		MainCamera.gameObject.camera.orthographicSize = outOrthographicSizeOfCamera;
 		Debug.Log("Init status of camera");
+	}
+
+	IEnumerator FadeoutWhiteScreen()
+	{
+		UICamera.SetActive(false);
+		WhiteScreen.SetActive(true);
+		iTween.FadeTo(WhiteScreen, 0, fadeoutTime);
+		yield return new WaitForSeconds(fadeoutTime);
+		WhiteScreen.SetActive(false);
+		UICamera.SetActive(true);
+//		WhiteScreen.SetActive(false);
 	}
 
 	IEnumerator MoveAniOfCamera(Vector3 position, float size)
