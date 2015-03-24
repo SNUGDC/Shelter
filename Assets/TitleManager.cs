@@ -7,8 +7,8 @@ public class TitleManager : MonoBehaviour {
 
 	public GameObject prologue;
 	public GameObject newGameText;
-	public int activeTimeOfText = 3;
-	public int fadeoutTimeOfText = 2;
+	public const int activeTimeOfText = 3;
+	public const int fadeoutTimeOfText = 2;
 
 	void Awake()
 	{
