@@ -18,10 +18,6 @@ public class GameManager : MonoBehaviour {
 	const float midOrthographicSizeOfCamera = 3.6f / 2;
 	const float inOrthographicSizeOfCamera = 3.6f / 6;
 
-	Vector3 outScaleOfCamera = new Vector3 (1, 1, 1);
-	Vector3 midScaleOfCamera = new Vector3 (2, 2, 1);
-	Vector3 inScaleOfCamera = new Vector3 (6, 6, 1);
-
 	public enum CameraPosition
 	{
 		Out,
@@ -40,6 +36,11 @@ public class GameManager : MonoBehaviour {
 		return gameManagerInstance;
 	}
 
+	public CameraPosition GetCameraPosition()
+	{
+		return cameraPosition;
+	}
+
 	// Use this for initialization
 	void Start ()
 	{
@@ -56,13 +57,18 @@ public class GameManager : MonoBehaviour {
 
 	IEnumerator MoveAniOfCamera(Vector3 position, float size)
 	{
-			iTween.MoveTo (MainCamera, position, cameraMoveTime);
 			Debug.Log("Zoom from "+MainCamera.camera.orthographicSize+" to "+size);
 			iTween.ValueTo(MainCamera.gameObject, iTween.Hash("from", MainCamera.camera.orthographicSize,
 																"to", size,
 															  "time", cameraMoveTime,
 													"onupdatetarget", this.gameObject, //??
 														  "onupdate", "updateOrthographicSizeOfCamera"));
+			//Prevent appear background at call Move to 'Mid' View.
+			if (size == 1.8f)
+			{
+				yield return new WaitForSeconds(cameraMoveTime/2);
+			}
+			iTween.MoveTo (MainCamera, position, cameraMoveTime);
 			yield return new WaitForSeconds(cameraMoveTime);
 	}
 
@@ -71,9 +77,10 @@ public class GameManager : MonoBehaviour {
 		MainCamera.camera.orthographicSize = size;
 	}
 
-	void MoveCamera (CameraPosition cameraPosition)
+	void MoveCamera (CameraPosition newCameraPosition)
 	{
-		if (cameraPosition == CameraPosition.Out)
+		cameraPosition = newCameraPosition;
+		if (newCameraPosition == CameraPosition.Out)
 		{
 			StartCoroutine(MoveAniOfCamera(outPositionOfCamera, outOrthographicSizeOfCamera));
 		}
@@ -123,7 +130,6 @@ public class GameManager : MonoBehaviour {
 	void OnMouseDown()
 	{
 		cameraMoveByStatus();
-//		MoveCamera(CameraPosition.Mid);
 	}
 
 	// Update is called once per frame
