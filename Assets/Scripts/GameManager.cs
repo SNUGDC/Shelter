@@ -10,7 +10,7 @@ public class GameManager : MonoBehaviour {
 	public GameObject UICamera;
 	public GameObject WhiteScreen;
 	public CameraPosition cameraPosition = CameraPosition.Default;
-	public const int cameraMoveTime = 2;
+	public const int cameraMoveTime = 1;
 	public const int fadeoutTime = 2;
 
 	Vector3 outPositionOfCamera = new Vector3 (0, 0, -10);
@@ -74,21 +74,23 @@ public class GameManager : MonoBehaviour {
 
 	IEnumerator MoveAniOfCamera(Vector3 position, float size)
 	{
+			isCameraMove = true;
 			this.gameObject.collider2D.enabled = false;
 			Debug.Log("Zoom from "+MainCamera.camera.orthographicSize+" to "+size);
 			iTween.ValueTo(MainCamera.gameObject, iTween.Hash("from", MainCamera.camera.orthographicSize,
 																"to", size,
 															  "time", cameraMoveTime,
-													"onupdatetarget", this.gameObject, //??
+													"onupdatetarget", this.gameObject,
 														  "onupdate", "updateOrthographicSizeOfCamera"));
 			//Prevent appear background at call Move to 'Mid' View.
 			if (size == 1.8f)
 			{
-				yield return new WaitForSeconds(cameraMoveTime/2);
+				yield return new WaitForSeconds(cameraMoveTime);
 			}
 			iTween.MoveTo (MainCamera, position, cameraMoveTime);
 			yield return new WaitForSeconds(cameraMoveTime);
 			this.gameObject.collider2D.enabled = true;
+			isCameraMove = false;
 	}
 
 	void updateOrthographicSizeOfCamera(float size)
@@ -122,37 +124,42 @@ public class GameManager : MonoBehaviour {
 		MainCamera.gameObject.camera.orthographicSize = size;
 	}
 
-	//temp value. using test.
-	int cameraStatus = 0;
-
-	void cameraMoveByStatus()
-	{
-		Debug.Log("Move Camera by Temp method : 'cameraMoveByStatus'");
-		if (cameraStatus == 0)
-		{
-			MoveCamera(CameraPosition.Mid);
-			cameraStatus++;
-
-		}
-		else if (cameraStatus == 1)
-		{
-			MoveCamera(CameraPosition.In);
-			cameraStatus++;
-		}
-		else if (cameraStatus == 2)
-		{
-			MoveCamera(CameraPosition.Out);
-			cameraStatus = 0;
-		}
-	}
-
-	void OnMouseDown()
-	{
-		cameraMoveByStatus();
-	}
+	bool isCameraMove = false;
 
 	// Update is called once per frame
 	void Update () {
+		if (Input.GetAxis("Mouse ScrollWheel") < 0 && isCameraMove == false)
+		{
+			Debug.Log("Push uparrow");
+//			isCameraMove = true;
+			if (cameraPosition == CameraPosition.Out)
+			{
+				cameraPosition = CameraPosition.Mid;
+				MoveCamera(cameraPosition);
+			}
+			else if (cameraPosition == CameraPosition.Mid)
+			{
+				cameraPosition = CameraPosition.In;
+				MoveCamera(cameraPosition);
+			}
+//			isCameraMove = false;
+		}
 
+		if (Input.GetAxis("Mouse ScrollWheel") > 0 && isCameraMove == false)
+		{
+			Debug.Log("Push downarrow");
+//			isCameraMove = true;
+			if (cameraPosition == CameraPosition.In)
+			{
+				cameraPosition = CameraPosition.Mid;
+				MoveCamera(cameraPosition);
+			}
+			else if (cameraPosition == CameraPosition.Mid)
+			{
+				cameraPosition = CameraPosition.Out;
+				MoveCamera(cameraPosition);
+			}
+//			isCameraMove = false;
+		}
 	}
 }
