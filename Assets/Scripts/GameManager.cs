@@ -9,6 +9,9 @@ public class GameManager : MonoBehaviour {
 	public GameObject MainCamera;
 	public GameObject UICamera;
 	public GameObject WhiteScreen;
+	public Nutrient Nutrient;
+	public Calender Calender;
+
 	public CameraPosition cameraPosition = CameraPosition.Default;
 	public const int cameraMoveTime = 1;
 	public const int fadeoutTime = 2;
@@ -49,6 +52,12 @@ public class GameManager : MonoBehaviour {
 	{
 		InitializeCamera();
 		StartCoroutine("FadeoutWhiteScreen");
+	}
+
+	public void EndTurn()
+	{
+		Nutrient.GainNutrientAtEndTurn();
+		Calender.EndTurn();
 	}
 
 	void InitializeCamera()

@@ -36,7 +36,7 @@ public class UIManager : MonoBehaviour {
 			Calender.GetComponent<MeshRenderer>().enabled = true;
 			Nutrient.GetComponent<MeshRenderer>().enabled = false;
 			ShelterStats.GetComponent<MeshRenderer>().enabled = false;
-			TurnEndButton.SetActive(false);
+			TurnEndButton.SetActive(true);
 			UpgradeButton.SetActive(false);
 		}
 		else if (cameraPosition == GameManager.CameraPosition.Mid)

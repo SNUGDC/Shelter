@@ -26,7 +26,12 @@ public class Nutrient : MonoBehaviour {
 		return level;
 	}
 
-	int CalculateNutrientFromLevel(int level)
+	public void GainNutrientAtEndTurn()
+	{
+		nutrient += CalculateGainNutrientEachTurn(level);
+	}
+
+	int CalculateGainNutrientEachTurn(int level)
 	{
 		return nutrientOfBaseLevel + level;
 	}

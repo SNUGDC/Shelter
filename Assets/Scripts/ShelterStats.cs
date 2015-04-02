@@ -3,9 +3,11 @@ using System.Collections;
 
 public class ShelterStats : MonoBehaviour {
 
+	const int defaultFood = 2;
+
 	int outerCoating;
 	int innerCoating;
-	int feeding;
+	int food;
 	int stalk;
 
 	int outerCoatingLevel;
@@ -21,9 +23,9 @@ public class ShelterStats : MonoBehaviour {
 	{
 		innerCoating = newValue;
 	}
-	public void SetFeeding(int newValue)
+	public void Setfood(int newValue)
 	{
-		feeding = newValue;
+		food = newValue;
 	}
 	public void SetStalk(int newValue)
 	{
@@ -57,7 +59,7 @@ public class ShelterStats : MonoBehaviour {
 	}
 	public int GetFeeding()
 	{
-		return feeding;
+		return food;
 	}
 	public int GetStalk()
 	{
@@ -68,7 +70,7 @@ public class ShelterStats : MonoBehaviour {
 	{
 		outerCoating = outerCoatingLevel;
 		innerCoating = innerCoatingLevel * 3;
-		feeding = feedingLevel * 3;
+		food = defaultFood;
 		stalk = stalkLevel * 2;
 	}
 
@@ -119,7 +121,7 @@ public class ShelterStats : MonoBehaviour {
 		GetComponent<TextMesh>().text =
 			"겉껍질 : 내구도 " + outerCoating + "/" + CalculateOuterCoatingFromLevel(outerCoatingLevel) + " (레벨 " + outerCoatingLevel + ")\n" +
 			"속껍질 : 내구도 " + innerCoating + "/" + CalculateInnerCoatingFromLevel(innerCoatingLevel) + " (레벨 " + innerCoatingLevel + ")\n" +
-			"양분 : " + CalculateFeedingFromLevel(feedingLevel) + "/영양분 (레벨 " + feedingLevel + ")\n" +
+			"양분 : " + food + " (" + CalculateFeedingFromLevel(feedingLevel) + "/영양분) (레벨 " + feedingLevel + ")\n" +
 			"꼭지 : 내구도 " + stalk + "/" + CalculateStalkFromLevel(stalkLevel) + " (레벨 " + stalkLevel + ")\n";
 	}
 }
