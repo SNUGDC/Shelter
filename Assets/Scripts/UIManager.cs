@@ -8,6 +8,8 @@ public class UIManager : MonoBehaviour {
 	public GameObject Calender;
 	public GameObject Nutrient;
 	public GameObject ShelterStats;
+	public GameObject TurnEndButton;
+	public GameObject UpgradeButton;
 
 	public GameManager.CameraPosition cameraPosition = GameManager.CameraPosition.Default;
 
@@ -34,18 +36,24 @@ public class UIManager : MonoBehaviour {
 			Calender.GetComponent<MeshRenderer>().enabled = true;
 			Nutrient.GetComponent<MeshRenderer>().enabled = false;
 			ShelterStats.GetComponent<MeshRenderer>().enabled = false;
+			TurnEndButton.SetActive(false);
+			UpgradeButton.SetActive(false);
 		}
 		else if (cameraPosition == GameManager.CameraPosition.Mid)
 		{
 			Calender.GetComponent<MeshRenderer>().enabled = true;
 			Nutrient.GetComponent<MeshRenderer>().enabled = true;
 			ShelterStats.GetComponent<MeshRenderer>().enabled = false;
+			TurnEndButton.SetActive(true);
+			UpgradeButton.SetActive(true);
 		}
 		else if (cameraPosition == GameManager.CameraPosition.In)
 		{
 			Calender.GetComponent<MeshRenderer>().enabled = true;
 			Nutrient.GetComponent<MeshRenderer>().enabled = true;
 			ShelterStats.GetComponent<MeshRenderer>().enabled = true;
+			TurnEndButton.SetActive(true);
+			UpgradeButton.SetActive(true);
 		}
 		else if (cameraPosition == GameManager.CameraPosition.Default)
 		{
