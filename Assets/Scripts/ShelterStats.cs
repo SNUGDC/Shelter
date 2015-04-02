@@ -72,6 +72,38 @@ public class ShelterStats : MonoBehaviour {
 		stalk = stalkLevel * 2;
 	}
 
+	int CalculateOuterCoatingFromLevel(int outerCoatingLevel)
+	{
+		int result = (outerCoatingLevel - 1) * 3;
+		if (result == 0)
+		{
+			result = 1;
+		}
+		return result;
+	}
+
+	int CalculateInnerCoatingFromLevel(int innerCoatingLevel)
+	{
+		if (innerCoatingLevel == 1)
+		{
+			return 3;
+		}
+		else
+		{
+			return CalculateInnerCoatingFromLevel(innerCoatingLevel - 1) + innerCoatingLevel;
+		}
+	}
+
+	int CalculateFeedingFromLevel(int feedingLevel)
+	{
+		return feedingLevel * 3;
+	}
+
+	int CalculateStalkFromLevel(int stalkLevel)
+	{
+		return stalkLevel * 2;
+	}
+
 	// Use this for initialization
 	void Start () {
 		outerCoatingLevel = 1;
@@ -84,9 +116,10 @@ public class ShelterStats : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		GetComponent<TextMesh>().text = "겉껍질 : " + outerCoating + " (레벨 " + outerCoatingLevel + ")\n" +
-										"속껍질 : " + innerCoating + " (레벨 " + innerCoatingLevel + ")\n" +
-										"양분 : " + feeding + " (레벨 " + feedingLevel + ")\n" +
-										"꼭지 : " + stalk + " (레벨 " + stalkLevel + ")\n";
+		GetComponent<TextMesh>().text =
+			"겉껍질 : 내구도 " + outerCoating + "/" + CalculateOuterCoatingFromLevel(outerCoatingLevel) + " (레벨 " + outerCoatingLevel + ")\n" +
+			"속껍질 : 내구도 " + innerCoating + "/" + CalculateInnerCoatingFromLevel(innerCoatingLevel) + " (레벨 " + innerCoatingLevel + ")\n" +
+			"양분 : " + CalculateFeedingFromLevel(feedingLevel) + "/영양분 (레벨 " + feedingLevel + ")\n" +
+			"꼭지 : 내구도 " + stalk + "/" + CalculateStalkFromLevel(stalkLevel) + " (레벨 " + stalkLevel + ")\n";
 	}
 }
