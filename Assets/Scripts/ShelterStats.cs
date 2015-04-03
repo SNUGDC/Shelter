@@ -6,6 +6,7 @@ public class ShelterStats : MonoBehaviour {
 	public Nutrient Nutrient;
 
 	const int defaultFood = 2;
+	const int requireNutrientToFix = 2;
 
 	int outerCoating;
 	int innerCoating;
@@ -36,9 +37,21 @@ public class ShelterStats : MonoBehaviour {
 
 	public void FixOuterCoating()
 	{
-		if (Nutrient.GetNutrient() > 0 && CalculateOuterCoatingFromLevel(outerCoatingLevel) < outerCoating)
+		if (Nutrient.GetNutrient() >= requireNutrientToFix && CalculateOuterCoatingFromLevel(outerCoatingLevel) > outerCoating)
 		{
-			//
+			Nutrient.SetNutrient(Nutrient.GetNutrient() - requireNutrientToFix);
+			SetOuterCoating(GetOuterCoating() + 1);
+			Debug.Log("Fix OuterCoating");
+		}
+	}
+
+	public void FixInnerCoating()
+	{
+		if (Nutrient.GetNutrient() >= requireNutrientToFix && CalculateInnerCoatingFromLevel(innerCoatingLevel) > innerCoating)
+		{
+			Nutrient.SetNutrient(Nutrient.GetNutrient() - requireNutrientToFix);
+			SetInnerCoating(GetInnerCoating() + 1);
+			Debug.Log("Fix InnerCoating");
 		}
 	}
 
@@ -48,6 +61,17 @@ public class ShelterStats : MonoBehaviour {
 		{
 			Nutrient.SetNutrient(Nutrient.GetNutrient() - 1);
 			SetFood(GetFood() + CalculateFeedingFromLevel(feedingLevel));
+			Debug.Log("Exchange Nutrient to Food");
+		}
+	}
+
+	public void FixStalk()
+	{
+		if (Nutrient.GetNutrient() >= requireNutrientToFix && CalculateStalkFromLevel(stalkLevel) > stalk)
+		{
+			Nutrient.SetNutrient(Nutrient.GetNutrient() - requireNutrientToFix);
+			SetStalk(GetStalk() + 1);
+			Debug.Log("Fix Stalk");
 		}
 	}
 
@@ -134,7 +158,7 @@ public class ShelterStats : MonoBehaviour {
 
 	int CalculateUpgradeStalkNutrient(int presentStalkLevel)
 	{
-		return (presentStalkLevel + 1) * 2;
+		return (presentStalkLevel) * 2;
 	}
 
 	int CalculateOuterCoatingFromLevel(int outerCoatingLevel)
