@@ -3,6 +3,8 @@ using System.Collections;
 
 public class ShelterStats : MonoBehaviour {
 
+	public Nutrient Nutrient;
+
 	const int defaultFood = 2;
 
 	int outerCoating;
@@ -23,7 +25,7 @@ public class ShelterStats : MonoBehaviour {
 	{
 		innerCoating = newValue;
 	}
-	public void Setfood(int newValue)
+	public void SetFood(int newValue)
 	{
 		food = newValue;
 	}
@@ -32,21 +34,55 @@ public class ShelterStats : MonoBehaviour {
 		stalk = newValue;
 	}
 
+	public void FixOuterCoating()
+	{
+		if (Nutrient.GetNutrient() > 0 && CalculateOuterCoatingFromLevel(outerCoatingLevel) < outerCoating)
+		{
+			//
+		}
+	}
+
+	public void ExchangeNutrientToFood()
+	{
+		if (Nutrient.GetNutrient() > 0)
+		{
+			Nutrient.SetNutrient(Nutrient.GetNutrient() - 1);
+			SetFood(GetFood() + CalculateFeedingFromLevel(feedingLevel));
+		}
+	}
+
 	public void UpgradeOuterCoating()
 	{
-		outerCoatingLevel++;
+		if (outerCoatingLevel < 5 && Nutrient.GetNutrient() >= CalculateUpgradeOuterCoatingNutrient(outerCoatingLevel))
+		{
+			Nutrient.SetNutrient(Nutrient.GetNutrient() - CalculateUpgradeOuterCoatingNutrient(outerCoatingLevel));
+			outerCoatingLevel++;
+			SetOuterCoating(CalculateOuterCoatingFromLevel(outerCoatingLevel));
+			Debug.Log("OuterCoating upgrade");
+		}
 	}
 	public void UpgradeInnerCoating()
 	{
-		innerCoatingLevel++;
-	}
+		if (innerCoatingLevel < 5 && Nutrient.GetNutrient() >= CalculateUpgradeInnerCoatingNutrient(innerCoatingLevel))
+		{
+			Nutrient.SetNutrient(Nutrient.GetNutrient() - CalculateUpgradeInnerCoatingNutrient(innerCoatingLevel));
+			innerCoatingLevel++;
+			SetInnerCoating(CalculateInnerCoatingFromLevel(innerCoatingLevel));
+			Debug.Log("InnerCoating upgrade");
+		}	}
 	public void UpgradeFeeding()
 	{
-		feedingLevel++;
+		//
 	}
 	public void UpgradeStalk()
 	{
-		stalkLevel++;
+		if (stalkLevel < 5 && Nutrient.GetNutrient() >= CalculateUpgradeStalkNutrient(stalkLevel))
+		{
+			Nutrient.SetNutrient(Nutrient.GetNutrient() - CalculateUpgradeStalkNutrient(stalkLevel));
+			stalkLevel++;
+			SetStalk(CalculateStalkFromLevel(stalkLevel));
+			Debug.Log("Stalk upgrade");
+		}
 	}
 
 	public int GetOuterCoating()
@@ -57,7 +93,7 @@ public class ShelterStats : MonoBehaviour {
 	{
 		return innerCoating;
 	}
-	public int GetFeeding()
+	public int GetFood()
 	{
 		return food;
 	}
@@ -66,12 +102,39 @@ public class ShelterStats : MonoBehaviour {
 		return stalk;
 	}
 
+	public void EatFoodAtTurnEnd()
+	{
+		food--;
+	}
+
 	void StatInitialize()
 	{
 		outerCoating = outerCoatingLevel;
 		innerCoating = innerCoatingLevel * 3;
 		food = defaultFood;
 		stalk = stalkLevel * 2;
+	}
+
+	int CalculateUpgradeOuterCoatingNutrient(int presentOuterCoatingLevel)
+	{
+		return presentOuterCoatingLevel + 1;
+	}
+
+	int CalculateUpgradeInnerCoatingNutrient(int presentInnerCoatingLevel)
+	{
+		if (presentInnerCoatingLevel == 1)
+		{
+			return 3;
+		}
+		else
+		{
+			return CalculateUpgradeInnerCoatingNutrient(presentInnerCoatingLevel - 1) + presentInnerCoatingLevel;
+		}
+	}
+
+	int CalculateUpgradeStalkNutrient(int presentStalkLevel)
+	{
+		return (presentStalkLevel + 1) * 2;
 	}
 
 	int CalculateOuterCoatingFromLevel(int outerCoatingLevel)

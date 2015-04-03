@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour {
 	public GameObject WhiteScreen;
 	public Nutrient Nutrient;
 	public Calender Calender;
+	public ShelterStats ShelterStats;
 
 	public CameraPosition cameraPosition = CameraPosition.Default;
 	public const int cameraMoveTime = 1;
@@ -56,8 +57,9 @@ public class GameManager : MonoBehaviour {
 
 	public void EndTurn()
 	{
-		Nutrient.GainNutrientAtEndTurn();
-		Calender.EndTurn();
+		Nutrient.GainNutrientAtTurnEnd();
+		Calender.PassDaysAtTurnEnd();
+		ShelterStats.EatFoodAtTurnEnd();
 	}
 
 	void InitializeCamera()

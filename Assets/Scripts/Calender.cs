@@ -13,7 +13,7 @@ public class Calender : MonoBehaviour {
 	int month;
 	Half halfMonth;
 
-	public void EndTurn()
+	public void PassDaysAtTurnEnd()
 	{
 		if (halfMonth == Half.First)
 		{

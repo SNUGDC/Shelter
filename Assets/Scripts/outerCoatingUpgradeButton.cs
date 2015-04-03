@@ -1,7 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class MainCamera : MonoBehaviour {
+public class outerCoatingUpgradeButton : MonoBehaviour {
+
+	public ShelterStats ShelterStats;
+
+	void OnMouseDown()
+	{
+		ShelterStats.UpgradeOuterCoating();
+	}
 
 	// Use this for initialization
 	void Start () {

@@ -5,9 +5,9 @@ public class UIManager : MonoBehaviour {
 
 	public static UIManager UIManagerInstance = null;
 
-	public GameObject Calender;
-	public GameObject Nutrient;
-	public GameObject ShelterStats;
+	public Calender Calender;
+	public Nutrient Nutrient;
+	public ShelterStats ShelterStats;
 	public GameObject TurnEndButton;
 	public GameObject UpgradeButton;
 
